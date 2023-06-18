@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link href="/css/styles.css" rel="stylesheet">
+
+  <title>DSA-TRACKER</title>
+
+</head>
+
+
+<body>
+    <center><h1>DSA-TRACKER</h1></center> 
+    <center><h2>Today</h2>
+      <h3>Count: <%= locals.problems_count%></h3>
+    </center> 
+    <form   method="post" action="./addProblem">
+        <label for="add_problem">Add problem</label>
+        <input type="text" id="add_problem" name="problem_url">
+        <button type="submit">Submit</button>
+    </form>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Category</th>
+          <th>URL</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% for (problem of problems_list) {%>
+          <tr id="<%= problem._id %>">
+            <td><%= problem.name %></td>
+            <td><%= problem.category %></td>
+            <td><a href="<%= problem.url %>" target="_blank">link</a></td>
+            <td><select data-value="<%= problem.status%>" name="status" id="select-<%= problem._id %>">
+              <option value="Accepted">Accepted</option>
+              <option value="Seen">Seen</option>
+              <option value="Attempt">Attempt</option>
+            </select></td>
+          </tr>
+          <% } %>
+        
+      </tbody>
+    </table>
+    
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="/js/scripts.js"></script>
+  
+</body>
+
+</html>
