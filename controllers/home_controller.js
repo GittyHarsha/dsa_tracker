@@ -24,7 +24,7 @@ function getDate(date) {
 async function fetch_by_date(date) {
     console.log("executing fetch_by_date");
     const query=problems.find({date_seen: date});
-    const promise=await query.exec();
+    const promise=(await query.sort({status_int: 1}).exec());
     //console.log("type of result of query.exec()", typeof promise);
     //console.log(promise, "date: ", date);
     return promise;
@@ -49,18 +49,21 @@ module.exports.home= async function(req, res) {
             res.render("home", 
             {
                 problems_list: list,
-                problems_count: list.length
+                problems_count: list.length,
+                problems_date: target_date
             }
             );
 };
-function removeHttp(url) {
-    const regex = /^https?:\/\//;
-    return url.replace(regex, "");
-  }
 
-  function removeSuffix(s) {
-    const regex = /\..*$/;
-    return s.replace(regex, "");
+function removeHttp(url) {
+    // Remove https://
+url = url.replace(/^https?:\/\//, "");
+
+// Remove .com
+
+// Remove www.
+url = url.replace(/^www\./, "");
+return url;
   }
 
 module.exports.addProblem=function(req, res) {
@@ -70,10 +73,23 @@ module.exports.addProblem=function(req, res) {
     var problem_url=req.body.problem_url;
     problem_url=removeHttp(problem_url);
     problem_url=problem_url.split('/');
-    //console.log("entered problem url removing http: ", problem_url);
-    var category=removeSuffix(problem_url[0]);
-    var problem_name;
+    console.log("entered problem url removing http: ", problem_url);
+    var category=problem_url[0];
+    if(category.includes("codeforces")) {
+        category="codeforces";
+    }
+    else if(category.includes("codechef")) {
+        category="codechef";
+    }
+    else if(category.includes("atcoder")) {
+        category="atcoder";
+    }
+    else if(category.includes("leetcode")) {
+        category="leetcode";
+    }
 
+    var problem_name;
+    console.log("category: ", category);
     if(category=="leetcode") {
         problem_name=problem_url[2];
     }
@@ -81,7 +97,13 @@ module.exports.addProblem=function(req, res) {
         problem_name=problem_url[2];
     }
     else if(category=="codeforces") {
-        problem_name=problem_url[2]+problem_url[4];
+        if(req.body.problem_url.includes("problemset")) {
+            problem_name=problem_url[3]+problem_url[4];
+        }
+        else
+        {
+            problem_name=problem_url[2]+problem_url[4];
+        }
     }
     else if(category=="atcoder") {
         problem_name=problem_url[-1];
@@ -151,7 +173,8 @@ module.exports.changeDate=async function(req, res) {
     res.render('home', 
     {
         problems_list: list,
-        problems_count: list.length
+        problems_count: list.length,
+        problems_date: date_change
     }
     ); 
     };

@@ -2,20 +2,36 @@ table {
   border-collapse: collapse;
   width: 100%;
   margin-bottom: 20px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 th, td {
-  border: 1px solid black;
+  border: 1px solid #ccc;
   padding: 8px;
+  text-align: center;
+}
+
+th {
+  background-color: #f9f9f9;
+  font-weight: bold;
 }
 
 tr:hover {
-  background-color: lightgrey;
+  background-color: #eee;
   cursor: pointer;
 }
 
 .accepted {
   background-color: #00ff00;
+}
+
+.seen {
+  background-color: #ffff00;
+}
+
+.attempted {
+  background-color: #ff0000;
 }
 
 .seen {
@@ -87,3 +103,4 @@ tr:hover {
   border: none;
   cursor: pointer;
 }
+

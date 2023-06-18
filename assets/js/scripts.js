@@ -1,4 +1,36 @@
+function getDate(date) {
+  const year = date.getFullYear();
+  var month = date.getMonth() + 1;
+  if(month<10)
+  {
+      month="0"+month;
+  }
+
+  var day = date.getDate();
+  if(day<10) {
+      day="0"+day;
+  }
+
+  date=year+'-'+month+'-'+day;
+  return date;
+}
+
+var problems_date = document.getElementById("given_date").dataset.problems_date;
+var today_date = new Date();
+today_date=getDate(today_date);
+console.log("today_date: ", today_date);
+console.log("problems_date: ", problems_date);
+
+
+if(today_date !=problems_date) {
+  $("#add_problem").prop('disabled', true);
+}
+
+
 $(document).ready( function() {
+  if( problems_date!=today_date ){
+    return;
+  }
     $("tr").dblclick(function(event) 
     {
         const elementId = event.currentTarget.id;
@@ -84,3 +116,5 @@ const selectElements = document.getElementsByTagName("select");
     }
     }
  );
+
+

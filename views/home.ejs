@@ -9,16 +9,10 @@
 
 
 <body>
+  <p id="given_date" data-problems_date="<%= problems_date%>"></p>
     <center><h1>DSA-TRACKER</h1>
       <h3>Count: <%= locals.problems_count%></h3>
-      <h3><% if(problems_list) {%>
-          <% if(problems_list.length==1) { %>
-            <%= problems_list.date_seen.toLocaleString().split(',')[0]%>
-
-          <% } else { %>
-            <%= problems_list[0].date_seen.toLocaleString().split(',')[0] %>
-          <% } %>
-        <% } %>
+      <h3><%= problems_date %>
       </h3>
       <form action="./" method="POST">
       <label for="pick-date"></label>
