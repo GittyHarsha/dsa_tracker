@@ -23,6 +23,10 @@ const problemSchema = new mongoose.Schema({
         type: String,
         required: true,
         enum: ["Accepted", "Seen", "Attempt"]
+    },
+    status_int: {
+        type: Infinity,
+        required: true
     }
 });
 

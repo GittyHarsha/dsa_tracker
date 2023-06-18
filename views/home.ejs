@@ -9,15 +9,29 @@
 
 
 <body>
-    <center><h1>DSA-TRACKER</h1></center> 
-    <center><h2>Today</h2>
+    <center><h1>DSA-TRACKER</h1>
       <h3>Count: <%= locals.problems_count%></h3>
-    </center> 
+      <h3><% if(problems_list) {%>
+          <% if(problems_list.length==1) { %>
+            <%= problems_list.date_seen.toLocaleString().split(',')[0]%>
+
+          <% } else { %>
+            <%= problems_list[0].date_seen.toLocaleString().split(',')[0] %>
+          <% } %>
+        <% } %>
+      </h3>
+      <form action="./" method="POST">
+      <label for="pick-date"></label>
+      <h3><input id="pick-date" type="date" name="date_change"></h3>
+      <button type="submit">pick a date</button>
+      </form> 
+    <br/>
     <form   method="post" action="./addProblem">
         <label for="add_problem">Add problem</label>
         <input type="text" id="add_problem" name="problem_url">
         <button type="submit">Submit</button>
     </form>
+  </center> 
     <table>
       <thead>
         <tr>

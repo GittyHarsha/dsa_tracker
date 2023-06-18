@@ -45,6 +45,8 @@ $(document).ready( function() {
           });
       });
 
+     
+
   });
 const selectElements = document.getElementsByTagName("select");
   console.log(selectElements);

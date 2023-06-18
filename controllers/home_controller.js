@@ -4,36 +4,54 @@ const problems=require("../models/problems");
 
 function getDate(date) {
     const year = date.getFullYear();
-    const month = date.getMonth() + 1;
-    const day = date.getDate();
+    var month = date.getMonth() + 1;
+    if(month<10)
+    {
+        month="0"+month;
+    }
+
+    var day = date.getDate();
+    if(day<10) {
+        day="0"+day;
+    }
+
     date=year+'-'+month+'-'+day;
     return date;
+}
+
+
+
+async function fetch_by_date(date) {
+    console.log("executing fetch_by_date");
+    const query=problems.find({date_seen: date});
+    const promise=await query.exec();
+    //console.log("type of result of query.exec()", typeof promise);
+    //console.log(promise, "date: ", date);
+    return promise;
 }
 
 module.exports.home= async function(req, res) {
     var today = new Date();
     today=getDate(today);
     console.log("today's date", today);
-
-    const query=problems.find({date_seen: today});
-    //const problems_count = await query.count();
-    //console.log("problem count", problems_count);
-    const promise=query.exec();
-
-    
-    console.log("in homecontroller.home");
-    promise.then(
-
-        function(list){
-           // console.log(list);
-
-            res.render('home', 
+    var target_date;
+    if(req.body.date_change) {
+        target_date=req.body.date_change;
+        
+    }
+    else {
+        target_date=today;
+    }
+    console.log("target_date", target_date);
+    var list=await fetch_by_date(target_date);
+   // console.log("list", list);
+    //console.log("list length: ", list.length);
+            res.render("home", 
             {
                 problems_list: list,
                 problems_count: list.length
             }
             );
-        });
 };
 function removeHttp(url) {
     const regex = /^https?:\/\//;
@@ -74,7 +92,8 @@ module.exports.addProblem=function(req, res) {
             date_seen: today,
             url: req.body.problem_url,
             status: "Attempt",
-            name: problem_name
+            name: problem_name,
+            status_int:0
         }
     );
 
@@ -113,10 +132,26 @@ res.redirect('back');
 module.exports.updateProblem = function(req, res) {
     const id=req.body.id;
     console.log("updating problem: ", id);
-    const query=problems.findByIdAndUpdate(id, {status: req.body.status});
+    var st_int=0;
+    if(req.body.status=="Accepted") st_int=2;
+    else if(req.body.status=="Seen") st_int=1;
+    const query=problems.findByIdAndUpdate(id, {status: req.body.status, status_int: st_int});
     const promise=query.exec();
     promise.then(function(updatedProblem) {
         console.log("updated problem: ", updatedProblem);
         res.redirect('back');
     }).catch(function(err) {if(err) {console.log(err)}});
 };
+
+module.exports.changeDate=async function(req, res) {
+    let date_change=req.body.date_change;
+
+    console.log("date to change: ", date_change);
+    var list=await fetch_by_date(date_change);
+    res.render('home', 
+    {
+        problems_list: list,
+        problems_count: list.length
+    }
+    ); 
+    };

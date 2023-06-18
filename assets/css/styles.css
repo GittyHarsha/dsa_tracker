@@ -1,9 +1,7 @@
-
 table {
   border-collapse: collapse;
   width: 100%;
-  display: inline-block;
-  position: center;
+  margin-bottom: 20px;
 }
 
 th, td {
@@ -28,14 +26,64 @@ tr:hover {
   background-color: #ff0000;
 }
 
-.div-card {
-    display: inline-block;
+.center {
+  text-align: center;
+}
+
+.form-container {
+  margin: 20px auto;
+  max-width: 400px;
+}
+
+.form-container label,
+.form-container input,
+.form-container button {
+  display: block;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.form-container input[type="text"] {
+  padding: 5px;
+}
+
+.form-container button {
+  padding: 8px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  cursor: pointer;
 }
 
 .cards-holder {
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    border: 2px solid black;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  border: 2px solid black;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.div-card {
+  width: calc(33% - 20px);
+  padding: 10px;
+  border: 1px solid black;
+  margin-bottom: 20px;
+}
+
+.div-card h3 {
+  margin-top: 0;
+}
+
+.div-card a {
+  color: #0066cc;
+}
+
+.div-card button {
+  margin-top: 10px;
+  padding: 5px 10px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  cursor: pointer;
 }
